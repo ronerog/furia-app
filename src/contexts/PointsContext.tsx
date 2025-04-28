@@ -109,7 +109,7 @@ export const PointsProvider = ({ children }: PointsProviderProps) => {
     };
     
     // eslint-disable-next-line prefer-const
-    interval = window.setInterval(checkActivity, 1000);
+    interval = window.setInterval(checkActivity, 10000);
     
     return () => {
       window.clearInterval(interval);
