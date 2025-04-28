@@ -26,7 +26,6 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [onlineUsers, setOnlineUsers] = useState(0);
 
-  // Efeito para conectar/desconectar o socket
   useEffect(() => {
     if (!isAuthenticated || !user) return;
     
@@ -41,38 +40,32 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
     
     setSocket(newSocket);
     
-    // Configurar event listeners do socket
     newSocket.on('connect', () => {
       console.log('Conectado ao chat');
     });
     
-    // Receber mensagens históricas ao conectar
     newSocket.on('recent_messages', (recentMessages: ChatMessage[]) => {
       setMessages(recentMessages);
     });
     
-    // Receber nova mensagem
     newSocket.on('new_message', (message: ChatMessage) => {
       setMessages(prev => [...prev, message]);
     });
     
-    // Atualizar contagem de usuários online
     newSocket.on('user_count', (count: number) => {
       setOnlineUsers(count);
     });
     
-    // Notificar desconexão
+
     newSocket.on('disconnect', () => {
       console.log('Desconectado do chat');
     });
     
-    // Limpar conexão ao desmontar o componente
     return () => {
       newSocket.disconnect();
     };
   }, [isAuthenticated, user]);
 
-  // Função para enviar mensagem
   const sendMessage = (messageData: Omit<ChatMessage, 'id'>) => {
     if (!socket || !isAuthenticated) return;
     

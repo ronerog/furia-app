@@ -102,19 +102,20 @@ export const PointsProvider = ({ children }: PointsProviderProps) => {
     
     const checkActivity = () => {
       viewTime += 1;
-      
-      if (viewTime % 300 === 0) {
+    
+      if (viewTime % 30 === 0) {
         addPoints(5, 'view_time');
       }
     };
     
     // eslint-disable-next-line prefer-const
-    interval = window.setInterval(checkActivity, 10000);
+    interval = window.setInterval(checkActivity, 30000);
     
     return () => {
       window.clearInterval(interval);
+      viewTime = 0;
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, addPoints]);
 
   return (
     <PointsContext.Provider

@@ -1,4 +1,3 @@
-// src/components/Layout/ChatBox.tsx
 import { useState, useEffect, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -17,6 +16,8 @@ import {
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { AuthContext } from '../../contexts/AuthContext';
 import { ChatContext } from '../../contexts/ChatContext';
 import { format } from 'date-fns';
@@ -36,6 +37,12 @@ const ChatBox = () => {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('chat-toggle', { 
+      detail: { isOpen: drawerOpen } 
+    }));
+  }, [drawerOpen]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,11 +92,9 @@ const ChatBox = () => {
             <ChatIcon />
           </Badge>
         </Box>
-        {isMobile && (
-          <IconButton onClick={toggleDrawer} edge="end">
-            <CloseIcon />
-          </IconButton>
-        )}
+        <IconButton onClick={toggleDrawer} edge="end">
+          <CloseIcon />
+        </IconButton>
       </Paper>
 
       {isAuthenticated ? (
@@ -101,60 +106,66 @@ const ChatBox = () => {
             display: 'flex',
             flexDirection: 'column'
           }}>
-            {messages.map((msg, index) => (
-              <Box 
-                key={index} 
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: msg.userId === user?.id ? 'flex-end' : 'flex-start',
-                  mb: 2
-                }}
-              >
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center',
-                  flexDirection: msg.userId === user?.id ? 'row-reverse' : 'row' 
-                }}>
-                  <Avatar 
-                    sx={{ 
-                      width: 24, 
-                      height: 24, 
-                      bgcolor: msg.userId === user?.id ? 'primary.main' : 'grey.700',
-                      mr: msg.userId === user?.id ? 0 : 1,
-                      ml: msg.userId === user?.id ? 1 : 0
-                    }}
-                  >
-                    {msg.username.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <Typography variant="caption" color="text.secondary">
-                    {msg.username}
-                  </Typography>
-                </Box>
-                
-                <Paper 
-                  elevation={0} 
-                  sx={{ 
-                    p: 1.5, 
-                    mt: 0.5, 
-                    maxWidth: '80%', 
-                    borderRadius: 2,
-                    bgcolor: msg.userId === user?.id ? 'primary.dark' : 'grey.800',
-                    color: msg.userId === user?.id ? 'primary.contrastText' : 'text.primary',
+            {messages.map((msg, index) => {
+              const isCurrentUser = msg.userId && user?.id ? 
+                msg.userId.toString() === user.id.toString() : 
+                false;
+              
+              return (
+                <Box 
+                  key={index} 
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: isCurrentUser ? 'flex-end' : 'flex-start',
+                    mb: 2
                   }}
                 >
-                  <Typography variant="body2">{msg.text}</Typography>
-                </Paper>
-                
-                <Typography 
-                  variant="caption" 
-                  color="text.secondary"
-                  sx={{ mt: 0.5 }}
-                >
-                  {format(new Date(msg.timestamp), 'HH:mm', { locale: ptBR })}
-                </Typography>
-              </Box>
-            ))}
+                  <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center',
+                    flexDirection: isCurrentUser ? 'row-reverse' : 'row' 
+                  }}>
+                    <Avatar 
+                      sx={{ 
+                        width: 24, 
+                        height: 24, 
+                        bgcolor: isCurrentUser ? 'primary.main' : 'grey.700',
+                        mr: isCurrentUser ? 0 : 1,
+                        ml: isCurrentUser ? 1 : 0
+                      }}
+                    >
+                      {msg.username?.charAt(0).toUpperCase() || '?'}
+                    </Avatar>
+                    <Typography variant="caption" color="text.secondary">
+                      {msg.username || 'Usuário'}
+                    </Typography>
+                  </Box>
+                  
+                  <Paper 
+                    elevation={0} 
+                    sx={{ 
+                      p: 1.5, 
+                      mt: 0.5, 
+                      maxWidth: '80%', 
+                      borderRadius: 2,
+                      bgcolor: isCurrentUser ? 'primary.dark' : 'grey.800',
+                      color: isCurrentUser ? 'primary.contrastText' : 'text.primary',
+                    }}
+                  >
+                    <Typography variant="body2">{msg.text}</Typography>
+                  </Paper>
+                  
+                  <Typography 
+                    variant="caption" 
+                    color="text.secondary"
+                    sx={{ mt: 0.5 }}
+                  >
+                    {format(new Date(msg.timestamp), 'HH:mm', { locale: ptBR })}
+                  </Typography>
+                </Box>
+              );
+            })}
             <div ref={messagesEndRef} />
           </Box>
 
@@ -266,19 +277,47 @@ const ChatBox = () => {
   }
 
   return (
-    <Box 
-      sx={{ 
-        position: 'fixed',
-        right: 0,
-        top: 64,
-        bottom: 0,
-        width: 320,
-        zIndex: 100,
-        display: drawerOpen ? 'block' : 'none'
-      }}
-    >
-      {renderChatContent()}
-    </Box>
+    <>
+      <Box 
+        sx={{ 
+          position: 'fixed',
+          right: drawerOpen ? 320 : 0,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          zIndex: 101,
+          transition: 'right 0.3s ease'
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={toggleDrawer}
+          sx={{ 
+            minWidth: 0,
+            height: 80,
+            width: 30,
+            borderRadius: '4px 0 0 4px',
+            p: 0
+          }}
+        >
+          {drawerOpen ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
+        </Button>
+      </Box>
+      
+      <Box 
+        sx={{ 
+          position: 'fixed',
+          right: drawerOpen ? 0 : -320,
+          top: 64,
+          bottom: 0,
+          width: 320,
+          zIndex: 100,
+          transition: 'right 0.3s ease'
+        }}
+      >
+        {renderChatContent()}
+      </Box>
+    </>
   );
 };
 
