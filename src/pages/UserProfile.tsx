@@ -47,6 +47,7 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
+  
 
   return (
     <div
@@ -85,14 +86,13 @@ const UserProfile = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const nextLevelPoints = (currentLevel + 1) * 100;
   const progress = ((points % 100) / 100) * 100;
-  
-  useEffect(() => {
+
+ useEffect(() => {
     const fetchUserStats = async () => {
       if (!isAuthenticated) {
         setLoading(false);
         return;
       }
-      
       try {
         setUserStats({
           totalTimeMinutes: 320,
@@ -100,7 +100,7 @@ const UserProfile = () => {
           matchesWatched: 12,
           rewardsRedeemed: 2,
           favoriteGame: 'valorant',
-          joinDate: new Date(new Date().getTime() - 60 * 24 * 60 * 60 * 1000) // 60 days ago
+          joinDate: new Date(new Date().getTime() - 60 * 24 * 60 * 60 * 1000) // 60 dias atrás
         });
       } catch (err) {
         console.error('Erro ao carregar estatísticas do usuário:', err);
@@ -108,7 +108,6 @@ const UserProfile = () => {
         setLoading(false);
       }
     };
-    
     fetchUserStats();
   }, [isAuthenticated, user]);
   
@@ -124,6 +123,7 @@ const UserProfile = () => {
     acc[type]++;
     return acc;
   }, {} as Record<string, number>);
+
 
   if (!isAuthenticated) {
     return (
@@ -158,11 +158,11 @@ const UserProfile = () => {
   return (
     <MainLayout>
       <Container maxWidth="lg">
-        <Paper 
-          elevation={0} 
-          sx={{ 
-            p: 3, 
-            mb: 3, 
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            mb: 3,
             borderRadius: 2,
             background: `linear-gradient(to right, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
             position: 'relative',
@@ -171,13 +171,11 @@ const UserProfile = () => {
         >
           <Grid container spacing={3} alignItems="center">
             <Grid>
-              <Avatar 
-                sx={{ width: 100, height: 100, bgcolor: 'primary.main' }}
-              >
-                {user?.username.charAt(0).toUpperCase()}
+              <Avatar sx={{ width: 100, height: 100, bgcolor: 'primary.main' }}>
+                {user?.username?.charAt(0).toUpperCase()}
               </Avatar>
             </Grid>
-            
+
             <Grid>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography variant="h4" component="h1">
@@ -187,17 +185,19 @@ const UserProfile = () => {
                   <EditIcon fontSize="small" />
                 </IconButton>
               </Box>
-              
+
               <Typography variant="body1" color="text.secondary">
-                Membro desde {userStats ? format(new Date(userStats.joinDate), "MMMM 'de' yyyy", { locale: ptBR }) : ''}
+                {userStats?.joinDate
+                  ? `Membro desde ${format(new Date(userStats.joinDate), "MMMM 'de' yyyy", { locale: ptBR })}`
+                  : ''}
               </Typography>
             </Grid>
-            
+
             <Grid>
-              <Paper 
-                elevation={3} 
-                sx={{ 
-                  p: 2, 
+              <Paper
+                elevation={3}
+                sx={{
+                  p: 2,
                   borderRadius: 2,
                   bgcolor: 'background.paper',
                   textAlign: 'center',
@@ -210,15 +210,15 @@ const UserProfile = () => {
                 <Typography variant="subtitle2" color="text.secondary">
                   PONTOS
                 </Typography>
-                
+
                 <Divider sx={{ my: 1 }} />
-                
+
                 <Typography variant="body2" color="text.secondary">
                   Nível {currentLevel}
                 </Typography>
-                <LinearProgress 
-                  variant="determinate" 
-                  value={progress} 
+                <LinearProgress
+                  variant="determinate"
+                  value={progress}
                   sx={{ mt: 1, height: 8, borderRadius: 4 }}
                 />
                 <Typography variant="caption" color="text.secondary">
@@ -228,8 +228,6 @@ const UserProfile = () => {
             </Grid>
           </Grid>
         </Paper>
-        
-        {/* Content tabs */}
         <Paper elevation={0} sx={{ borderRadius: 2 }}>
           <Tabs 
             value={tabValue} 
@@ -515,7 +513,7 @@ const UserProfile = () => {
                         Primeiro login
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
-                        Completado em {format(new Date(userStats.joinDate), 'dd/MM/yyyy')}
+                      {userStats?.joinDate ? `Completado em ${format(new Date(userStats.joinDate), 'dd/MM/yyyy')}` : ''}
                       </Typography>
                     </Box>
                   </Paper>
@@ -666,7 +664,7 @@ const UserProfile = () => {
                 <CardMedia
                   component="img"
                   height={180}
-                  image="/images/rewards/mousepad.jpg"
+                  image="/images/rewards/mousepad.jpeg"
                   alt="Mousepad FURIA"
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
@@ -712,7 +710,7 @@ const UserProfile = () => {
                 <CardMedia
                   component="img"
                   height={180}
-                  image="/images/rewards/keychain.jpg"
+                  image="/images/rewards/keychain.jpeg"
                   alt="Chaveiro FURIA"
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
@@ -758,7 +756,7 @@ const UserProfile = () => {
                 <CardMedia
                   component="img"
                   height={180}
-                  image="/images/rewards/tshirt.jpg"
+                  image="/images/rewards/tshirt.jpeg"
                   alt="Camiseta FURIA"
                 />
                 <CardContent sx={{ flexGrow: 1 }}>

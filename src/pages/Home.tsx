@@ -243,7 +243,7 @@ const Home = () => {
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40%' }}>
                           <Avatar 
-                            src="/images/furia-logo.png" 
+                            src="/images/teams/furia.png" 
                             alt="FURIA" 
                             sx={{ width: 64, height: 64, mb: 1 }}
                           />
@@ -570,26 +570,26 @@ const mockStreams: Stream[] = [
   {
     id: '1',
     title: 'Treinando para o próximo campeonato de Valorant!',
-    streamerName: 'FURIAplayer1',
+    streamerName: 'FURIA Xarola',
     streamerAvatar: '/images/streamers/player1.jpg',
     thumbnailUrl: '/images/streams/valorant-stream.jpg',
-    url: 'https://twitch.tv/furiaplayer1',
+    url: 'https://www.twitch.tv/xarola_?lang=pt-br',
     game: 'valorant',
     viewerCount: 12500,
     isLive: true,
-    startedAt: new Date(new Date().getTime() - 3 * 60 * 60 * 1000) // 3 hours ago
+    startedAt: new Date(new Date().getTime() - 3 * 60 * 60 * 1000) 
   },
   {
     id: '2',
     title: 'Jogando ranqueadas com o time da FURIA',
-    streamerName: 'FURIAplayer2',
+    streamerName: 'FURIA Fallen',
     streamerAvatar: '/images/streamers/player2.jpg',
     thumbnailUrl: '/images/streams/csgo-stream.jpg',
-    url: 'https://twitch.tv/furiaplayer2',
+    url: 'https://www.twitch.tv/gafallen/',
     game: 'csgo',
     viewerCount: 8700,
     isLive: true,
-    startedAt: new Date(new Date().getTime() - 1 * 60 * 60 * 1000) // 1 hour ago
+    startedAt: new Date(new Date().getTime() - 1 * 60 * 60 * 1000)
   }
 ];
 
