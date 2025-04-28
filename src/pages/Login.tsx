@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -6,14 +6,13 @@ import {
   Typography,
   TextField,
   Button,
-  Divider,
   Paper,
   CircularProgress,
   Alert,
   IconButton,
   InputAdornment
 } from '@mui/material';
-import { Google as GoogleIcon, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -36,10 +35,17 @@ interface LoginFormData {
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, googleLogin } = useContext(AuthContext);
+  const { login, isAuthenticated } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  
+  useEffect(() => {
+    // Redirecionar se já estiver autenticado
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
   
   const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: yupResolver(schema),
@@ -58,23 +64,15 @@ const Login = () => {
       navigate('/');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'Erro ao fazer login. Verifique suas credenciais.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const mockTokenId = 'google-token-123';
-      await googleLogin(mockTokenId);
-      navigate('/');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      setError(err?.response?.data?.message || 'Erro ao fazer login com Google.');
+      console.error('Erro de login:', err);
+      
+      if (err.response && err.response.status === 401) {
+        setError('Email ou senha incorretos. Por favor, tente novamente.');
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError('Erro ao fazer login. Por favor, tente novamente mais tarde.');
+      }
     } finally {
       setLoading(false);
     }
@@ -170,24 +168,6 @@ const Login = () => {
               sx={{ mt: 3, mb: 2, py: 1.5 }}
             >
               {loading ? <CircularProgress size={24} /> : 'Entrar'}
-            </Button>
-            
-            <Divider sx={{ my: 2 }}>
-              <Typography variant="body2" color="text.secondary">
-                OU
-              </Typography>
-            </Divider>
-            
-            <Button
-              fullWidth
-              variant="outlined"
-              color="primary"
-              startIcon={<GoogleIcon />}
-              onClick={handleGoogleLogin}
-              disabled={loading}
-              sx={{ mb: 2, py: 1.5 }}
-            >
-              Entrar com Google
             </Button>
             
             <Box sx={{ mt: 2, textAlign: 'center' }}>

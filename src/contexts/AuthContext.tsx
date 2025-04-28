@@ -11,7 +11,6 @@ interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  googleLogin: (tokenId: string) => Promise<void>;
   register: (userData: unknown) => Promise<void>;
   logout: () => void;
 }
@@ -30,7 +29,6 @@ export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   loading: true,
   login: async () => {},
-  googleLogin: async () => {},
   register: async () => {},
   logout: () => {},
 });
@@ -78,39 +76,45 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log('Tentativa de login:', { email, password });
+      
       const response = await api.post('/auth/login', { email, password });
       
-      if (response.data.success === false) {
-        throw new Error(response.data.message || 'Erro ao fazer login');
+      console.log('Resposta do servidor:', response.data);
+      
+      if (!response.data || response.data.success === false) {
+        throw new Error(response.data?.message || 'Erro ao fazer login');
       }
       
       const { token, user } = response.data;
       
+      if (!token || !user) {
+        throw new Error('Resposta incompleta do servidor');
+      }
+      
       localStorage.setItem('token', token);
       
-      // Conectar ao socket
       connectSocket(token);
       
       setUser(user);
       setIsAuthenticated(true);
       
-        return user;
-      } catch (error) {
-        console.error('Login error:', error);
-        throw error;
+      return user;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error('Login error:', error);
+      
+      if (error.response) {
+        if (error.response.status === 401) {
+          throw new Error('Email ou senha incorretos');
+        } else if (error.response.data && error.response.data.message) {
+          throw new Error(error.response.data.message);
+        }
       }
-    };
-
-  const googleLogin = async (tokenId: string) => {
-    const response = await axios.post(`${API_URL}/auth/google`, { tokenId });
-    const { token, user } = response.data;
-    
-    localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    
-    setUser(user);
-    setIsAuthenticated(true);
+      throw error;
+    }
   };
+
 
   const register = async (userData: unknown) => {
     const response = await axios.post(`${API_URL}/auth/register`, userData);
@@ -126,7 +130,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     localStorage.removeItem('token');
     
-    // Desconectar do socket
     disconnectSocket();
     
     setUser(null);
@@ -140,7 +143,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isAuthenticated,
         loading,
         login,
-        googleLogin,
         register,
         logout
       }}
