@@ -1,55 +1,273 @@
-# React + TypeScript + Vite
+# Frontend: FURIA App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Visão Geral
 
-Currently, two official plugins are available:
+**FURIA App** é uma aplicação frontend desenvolvida para fãs da FURIA Esports, permitindo que acompanhem partidas, assistam streams, interajam no chat, ganhem pontos e resgatem recompensas. A aplicação oferece uma experiência completa para os fãs, com integração em tempo real e sistema de gamificação.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologias Utilizadas
 
-## Expanding the ESLint configuration
+- **React 19**: Framework JavaScript para construção da interface  
+- **TypeScript**: Tipagem estática para melhor desenvolvimento  
+- **Material UI 7**: Biblioteca de componentes para interface de usuário  
+- **React Router Dom 7**: Gerenciamento de rotas na aplicação  
+- **Socket.IO Client**: Comunicação em tempo real  
+- **Axios**: Requisições HTTP para a API  
+- **React Hook Form + Yup**: Gerenciamento e validação de formulários  
+- **Date-fns**: Manipulação de datas  
+- **JWT Decode**: Decodificação de tokens JWT  
+- **Vite**: Ferramenta de build e desenvolvimento  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Estrutura do Projeto
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### `src/components`: Componentes reutilizáveis
+
+- **Layout**: Componentes estruturais (`Header`, `Footer`, `ChatBox`, `MainLayout`)  
+- **Componentes específicos**: `MatchCard`, `PlayerCard`, `ProductCard`, `StreamCard`  
+
+### `src/contexts`: Contextos React para estado global
+
+- `AuthContext`: Gerenciamento de autenticação  
+- `ChatContext`: Comunicação em tempo real  
+- `PointsContext`: Sistema de pontos e recompensas  
+
+### `src/pages`: Páginas da aplicação
+
+- `Home`, `Login`, `Register`, `UserProfile`, `Rewards`, entre outras  
+
+### `src/services`: Serviços de comunicação
+
+- `api.ts`: Configuração do Axios  
+- `socket.ts`: Configuração do Socket.IO  
+
+### Outras pastas
+
+- `src/theme`: Tema personalizado Material UI  
+- `src/types`: Definições de tipos TypeScript  
+
+## Principais Funcionalidades
+
+- **Autenticação**: Sistema completo de registro e login de usuários  
+- **Perfil de Usuário**: Visualização e edição de dados pessoais  
+- **Chat em Tempo Real**: Interação com outros usuários da plataforma  
+- **Sistema de Pontos**: Gamificação com pontos por participação  
+- **Recompensas**: Resgate de produtos exclusivos com pontos  
+- **Notícias**: Informações atualizadas sobre a FURIA  
+- **Partidas**: Acompanhamento de jogos ao vivo e agendados  
+- **Streams**: Visualização de transmissões dos jogadores  
+
+## Como Rodar o Projeto
+
+### Pré-requisitos
+
+- Node.js (versão 18 ou superior)  
+- NPM ou Yarn  
+
+### Passo a Passo
+
+#### 1. Clone o repositório
+
+```bash
+git clone https://github.com/seu-usuario/furia-app.git
+cd furia-app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+#### 2. Instale as dependências
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
+# ou
+yarn install
 ```
-# furia-app
+
+#### 3. Configure o arquivo de ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto com o conteúdo:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+#### 4. Execute o projeto em modo de desenvolvimento
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+#### 5. Acesse a aplicação
+
+A aplicação estará disponível em: [http://localhost:5173](http://localhost:5173)
+
+### Build para produção
+
+```bash
+npm run build
+# ou
+yarn build
+```
+
+## Integração com o Backend
+
+A aplicação frontend depende do backend para funcionar corretamente. Certifique-se de que o servidor backend esteja em execução e acessível na URL configurada no arquivo `src/config.ts`.
+
+## Sistema de Pontos e Recompensas
+
+Os usuários ganham pontos através de:
+
+- **Login diário**: 20 pontos  
+- **Envio de mensagens no chat**: 1 ponto por mensagem  
+- **Assistir partidas**: 10 pontos  
+- **Assistir highlights**: 5 pontos  
+- **Tempo de navegação**: 5 pontos a cada 5 minutos  
+
+Pontos podem ser trocados por recompensas físicas como mousepads, camisetas e outros produtos exclusivos.
+
+## Layout Responsivo
+
+A aplicação é totalmente responsiva:
+
+- Layout específico para dispositivos móveis  
+- Drawer para menu em telas pequenas  
+- Chat flutuante em dispositivos móveis  
+
+## Customização de Tema
+
+O tema da aplicação pode ser customizado no arquivo `src/theme/theme.ts`, permitindo alterações nas cores, tipografia e componentes da aplicação.# Frontend: FURIA App
+
+## Visão Geral
+
+**FURIA App** é uma aplicação frontend desenvolvida para fãs da FURIA Esports, permitindo que acompanhem partidas, assistam streams, interajam no chat, ganhem pontos e resgatem recompensas. A aplicação oferece uma experiência completa para os fãs, com integração em tempo real e sistema de gamificação.
+
+## Tecnologias Utilizadas
+
+- **React 19**: Framework JavaScript para construção da interface  
+- **TypeScript**: Tipagem estática para melhor desenvolvimento  
+- **Material UI 7**: Biblioteca de componentes para interface de usuário  
+- **React Router Dom 7**: Gerenciamento de rotas na aplicação  
+- **Socket.IO Client**: Comunicação em tempo real  
+- **Axios**: Requisições HTTP para a API  
+- **React Hook Form + Yup**: Gerenciamento e validação de formulários  
+- **Date-fns**: Manipulação de datas  
+- **JWT Decode**: Decodificação de tokens JWT  
+- **Vite**: Ferramenta de build e desenvolvimento  
+
+## Estrutura do Projeto
+
+### `src/components`: Componentes reutilizáveis
+
+- **Layout**: Componentes estruturais (`Header`, `Footer`, `ChatBox`, `MainLayout`)  
+- **Componentes específicos**: `MatchCard`, `PlayerCard`, `ProductCard`, `StreamCard`  
+
+### `src/contexts`: Contextos React para estado global
+
+- `AuthContext`: Gerenciamento de autenticação  
+- `ChatContext`: Comunicação em tempo real  
+- `PointsContext`: Sistema de pontos e recompensas  
+
+### `src/pages`: Páginas da aplicação
+
+- `Home`, `Login`, `Register`, `UserProfile`, `Rewards`, entre outras  
+
+### `src/services`: Serviços de comunicação
+
+- `api.ts`: Configuração do Axios  
+- `socket.ts`: Configuração do Socket.IO  
+
+### Outras pastas
+
+- `src/theme`: Tema personalizado Material UI  
+- `src/types`: Definições de tipos TypeScript  
+
+## Principais Funcionalidades
+
+- **Autenticação**: Sistema completo de registro e login de usuários  
+- **Perfil de Usuário**: Visualização e edição de dados pessoais  
+- **Chat em Tempo Real**: Interação com outros usuários da plataforma  
+- **Sistema de Pontos**: Gamificação com pontos por participação  
+- **Recompensas**: Resgate de produtos exclusivos com pontos  
+- **Notícias**: Informações atualizadas sobre a FURIA  
+- **Partidas**: Acompanhamento de jogos ao vivo e agendados  
+- **Streams**: Visualização de transmissões dos jogadores  
+
+## Como Rodar o Projeto
+
+### Pré-requisitos
+
+- Node.js (versão 18 ou superior)  
+- NPM ou Yarn  
+
+### Passo a Passo
+
+#### 1. Clone o repositório
+
+```bash
+git clone https://github.com/seu-usuario/furia-app.git
+cd furia-app
+```
+
+#### 2. Instale as dependências
+
+```bash
+npm install
+# ou
+yarn install
+```
+
+#### 3. Configure o arquivo de ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto com o conteúdo:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+#### 4. Execute o projeto em modo de desenvolvimento
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+#### 5. Acesse a aplicação
+
+A aplicação estará disponível em: [http://localhost:5173](http://localhost:5173)
+
+### Build para produção
+
+```bash
+npm run build
+# ou
+yarn build
+```
+
+## Integração com o Backend
+
+A aplicação frontend depende do backend para funcionar corretamente. Certifique-se de que o servidor backend esteja em execução e acessível na URL configurada no arquivo `src/config.ts`.
+
+## Sistema de Pontos e Recompensas
+
+Os usuários ganham pontos através de:
+
+- **Login diário**: 20 pontos  
+- **Envio de mensagens no chat**: 1 ponto por mensagem  
+- **Assistir partidas**: 10 pontos  
+- **Assistir highlights**: 5 pontos  
+- **Tempo de navegação**: 5 pontos a cada 5 minutos  
+
+Pontos podem ser trocados por recompensas físicas como mousepads, camisetas e outros produtos exclusivos.
+
+## Layout Responsivo
+
+A aplicação é totalmente responsiva:
+
+- Layout específico para dispositivos móveis  
+- Drawer para menu em telas pequenas  
+- Chat flutuante em dispositivos móveis  
+
+## Customização de Tema
+
+O tema da aplicação pode ser customizado no arquivo `src/theme/theme.ts`, permitindo alterações nas cores, tipografia e componentes da aplicação.
