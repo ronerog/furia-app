@@ -107,8 +107,8 @@ const ChatBox = () => {
             flexDirection: 'column'
           }}>
             {messages.map((msg, index) => {
-              const isCurrentUser = msg.userId && user?.id ? 
-                msg.userId.toString() === user.id.toString() : 
+              const isCurrentUser = msg.username && user?.username ? 
+                msg.username.toString() === user.username.toString() : 
                 false;
               
               return (

@@ -1,5 +1,5 @@
-import { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -18,16 +18,16 @@ import {
   ListItemText,
   ListItemIcon,
   Divider,
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import MenuIcon from '@mui/icons-material/Menu';
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import MenuIcon from "@mui/icons-material/Menu";
 // s
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import PersonIcon from '@mui/icons-material/Person';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import { AuthContext } from '../../contexts/AuthContext';
-import { PointsContext } from '../../contexts/PointsContext';
-import logo from '../../assets/furia-logo.png';
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import PersonIcon from "@mui/icons-material/Person";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import { AuthContext } from "../../contexts/AuthContext";
+import { PointsContext } from "../../contexts/PointsContext";
+import logo from "../../assets/furia-logo.png";
 
 interface Game {
   name: string;
@@ -37,18 +37,32 @@ interface Game {
 
 const Header = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const { points } = useContext(PointsContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [gamesMenuAnchor, setGamesMenuAnchor] = useState<null | HTMLElement>(null);
+  const [gamesMenuAnchor, setGamesMenuAnchor] = useState<null | HTMLElement>(
+    null
+  );
 
   const games: Game[] = [
-    { name: 'Valorant', path: '/games/valorant', icon: '/images/games/valorant-icon.png' },
-    { name: 'CS:GO', path: '/games/csgo', icon: '/images/games/csgo-icon.png' },
-    { name: 'League of Legends', path: '/games/lol', icon: '/images/games/lol-icon.png' },
-    { name: 'Apex Legends', path: '/games/apex', icon: '/images/games/apex-icon.png' }
+    {
+      name: "Valorant",
+      path: "/games/valorant",
+      icon: "/images/games/valorant-icon.png",
+    },
+    { name: "CS:GO", path: "/games/csgo", icon: "/images/games/csgo-icon.png" },
+    {
+      name: "League of Legends",
+      path: "/games/lol",
+      icon: "/images/games/lol-icon.png",
+    },
+    {
+      name: "Apex Legends",
+      path: "/games/apex",
+      icon: "/images/games/apex-icon.png",
+    },
   ];
 
   const handleGamesMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -71,27 +85,39 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
     setMobileMenuOpen(false);
   };
 
   return (
     <AppBar position="fixed" color="transparent" elevation={0}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-            <Box component="img" src={logo} alt="FURIA Logo" sx={{ height: 50 }} />
+        <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+          <Link
+            to="/"
+            style={{
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              component="img"
+              src={logo}
+              alt="FURIA Logo"
+              sx={{ height: 50 }}
+            />
           </Link>
 
           {!isMobile && (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <Button color="inherit" component={Link} to="/">
                 Home
               </Button>
-              
-              <Button 
-                color="inherit" 
-                onClick={handleGamesMenuOpen} 
+
+              <Button
+                color="inherit"
+                onClick={handleGamesMenuOpen}
                 aria-haspopup="true"
               >
                 Games
@@ -101,59 +127,73 @@ const Header = () => {
                 open={Boolean(gamesMenuAnchor)}
                 onClose={handleGamesMenuClose}
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
+                  vertical: "bottom",
+                  horizontal: "center",
                 }}
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
+                  vertical: "top",
+                  horizontal: "center",
                 }}
               >
                 {games.map((game) => (
-                  <MenuItem key={game.name} onClick={() => handleNavigation(game.path)}>
-                    <Box component="img" src={game.icon} alt={game.name} sx={{ width: 24, mr: 1 }} />
+                  <MenuItem
+                    key={game.name}
+                    onClick={() => handleNavigation(game.path)}
+                  >
+                    <Box
+                      component="img"
+                      src={game.icon}
+                      alt={game.name}
+                      sx={{ width: 24, mr: 1 }}
+                    />
                     {game.name}
                   </MenuItem>
                 ))}
               </Menu>
-              
+
               <Button color="inherit" component={Link} to="/matches">
                 Partidas
               </Button>
-              
+
               <Button color="inherit" component={Link} to="/streams">
                 Lives
               </Button>
-              
+
               <Button color="inherit" component={Link} to="/news">
                 Notícias
               </Button>
-              
-              <Button color="inherit" component={Link} to="https://www.furia.gg/">
+
+              <Button
+                color="inherit"
+                component="a"
+                href="https://www.furia.gg/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Loja
               </Button>
             </Box>
           )}
 
           {!isMobile && (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               {isAuthenticated ? (
                 <>
                   <Typography variant="body2" color="primary" sx={{ mr: 2 }}>
                     {points} pontos
                   </Typography>
-                  
-                  <Button 
-                    color="inherit" 
-                    component={Link} 
+
+                  <Button
+                    color="inherit"
+                    component={Link}
                     to="/profile"
                     startIcon={
-                      <Avatar 
-                        sx={{ 
-                          width: 24, 
+                      <Avatar
+                        sx={{
+                          width: 24,
                           height: 24,
-                          backgroundColor: 'primary.main',
-                          color: 'primary.contrastText'
+                          backgroundColor: "primary.main",
+                          color: "primary.contrastText",
                         }}
                       >
                         {user?.username.charAt(0).toUpperCase()}
@@ -162,30 +202,27 @@ const Header = () => {
                   >
                     {user?.username}
                   </Button>
-                  
-                  <Button 
-                    color="inherit"
-                    onClick={handleLogout}
-                  >
+
+                  <Button color="inherit" onClick={handleLogout}>
                     Sair
                   </Button>
                 </>
               ) : (
                 <>
-                  <Button 
-                    variant="outlined" 
-                    color="primary" 
-                    component={Link} 
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    component={Link}
                     to="/login"
                     sx={{ mr: 1 }}
                   >
                     Login
                   </Button>
-                  
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
-                    component={Link} 
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component={Link}
                     to="/register"
                   >
                     Cadastre-se
@@ -213,19 +250,23 @@ const Header = () => {
         open={mobileMenuOpen}
         onClose={handleMobileMenuToggle}
       >
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-        >
+        <Box sx={{ width: 250 }} role="presentation">
           {isAuthenticated && (
-            <Box sx={{ p: 2, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-              <Avatar 
-                sx={{ 
-                  width: 60, 
+            <Box
+              sx={{
+                p: 2,
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Avatar
+                sx={{
+                  width: 60,
                   height: 60,
                   mb: 1,
-                  backgroundColor: 'primary.main',
-                  color: 'primary.contrastText'
+                  backgroundColor: "primary.main",
+                  color: "primary.contrastText",
                 }}
               >
                 {user?.username.charAt(0).toUpperCase()}
@@ -236,66 +277,101 @@ const Header = () => {
               </Typography>
             </Box>
           )}
-          
+
           <Divider />
-          
+
           <List>
-            <ListItem component="button" onClick={() => handleNavigation('/')}>
+            <ListItem component="button" onClick={() => handleNavigation("/")}>
               <ListItemText primary="Home" />
             </ListItem>
-            
-            <ListItem component="button" onClick={() => handleNavigation('/matches')}>
+
+            <ListItem
+              component="button"
+              onClick={() => handleNavigation("/matches")}
+            >
               <ListItemText primary="Partidas" />
             </ListItem>
-            
-            <ListItem component="button" onClick={() => handleNavigation('/streams')}>
+
+            <ListItem
+              component="button"
+              onClick={() => handleNavigation("/streams")}
+            >
               <ListItemText primary="Lives" />
             </ListItem>
-            
-            <ListItem component="button" onClick={() => handleNavigation('/news')}>
+
+            <ListItem
+              component="button"
+              onClick={() => handleNavigation("/news")}
+            >
               <ListItemText primary="Notícias" />
             </ListItem>
-            
-            <ListItem component="button" onClick={() => handleNavigation('/shop')}>
+
+            <ListItem
+              component="a"
+              href="https://www.furia.gg/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <ListItemText primary="Loja" />
             </ListItem>
           </List>
-          
+
           <Divider />
-          
-          <List subheader={
-            <Typography variant="subtitle2" color="text.secondary" sx={{ pl: 2, pt: 1 }}>
-              Games
-            </Typography>
-          }>
+
+          <List
+            subheader={
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                sx={{ pl: 2, pt: 1 }}
+              >
+                Games
+              </Typography>
+            }
+          >
             {games.map((game) => (
-              <ListItem component="button" key={game.name} onClick={() => handleNavigation(game.path)}>
+              <ListItem
+                component="button"
+                key={game.name}
+                onClick={() => handleNavigation(game.path)}
+              >
                 <ListItemIcon>
-                  <Box component="img" src={game.icon} alt={game.name} sx={{ width: 24 }} />
+                  <Box
+                    component="img"
+                    src={game.icon}
+                    alt={game.name}
+                    sx={{ width: 24 }}
+                  />
                 </ListItemIcon>
                 <ListItemText primary={game.name} />
               </ListItem>
             ))}
           </List>
-          
+
           <Divider />
-          
+
           {isAuthenticated ? (
             <List>
-              <ListItem component="button" onClick={() => handleNavigation('/profile')}>
+              <ListItem
+                component="button"
+                onClick={() => handleNavigation("/profile")}
+              >
                 <ListItemIcon>
                   <PersonIcon />
                 </ListItemIcon>
                 <ListItemText primary="Meu Perfil" />
               </ListItem>
-              
-              <ListItem component="button" onClick={() => handleNavigation('/rewards')}>
+
+              <ListItem
+                component="button"
+                onClick={() => handleNavigation("/rewards")}
+              >
                 <ListItemIcon>
                   <CardGiftcardIcon />
                 </ListItemIcon>
                 <ListItemText primary="Recompensas" />
               </ListItem>
-              
+
               <ListItem component="button" onClick={handleLogout}>
                 <ListItemIcon>
                   <ExitToAppIcon />
@@ -305,19 +381,25 @@ const Header = () => {
             </List>
           ) : (
             <List>
-              <ListItem component="button" onClick={() => handleNavigation('/login')}>
+              <ListItem
+                component="button"
+                onClick={() => handleNavigation("/login")}
+              >
                 <ListItemText primary="Login" />
               </ListItem>
-              
-              <ListItem component="button" onClick={() => handleNavigation('/register')}>
+
+              <ListItem
+                component="button"
+                onClick={() => handleNavigation("/register")}
+              >
                 <ListItemText primary="Cadastre-se" />
               </ListItem>
             </List>
           )}
         </Box>
-        </Drawer>
+      </Drawer>
     </AppBar>
   );
-}
+};
 
 export default Header;
