@@ -82,14 +82,13 @@ const ChatBox = () => {
           bgcolor: 'background.paper'
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box >
           <Typography variant="h6" color="primary">Chat da FURIA</Typography>
-          <Badge 
+            Espectadores: <Badge 
             badgeContent={onlineUsers} 
             color="primary" 
             sx={{ ml: 2 }}
           >
-            <ChatIcon />
           </Badge>
         </Box>
         <IconButton onClick={toggleDrawer} edge="end">
