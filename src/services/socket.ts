@@ -11,6 +11,7 @@ export const connectSocket = (token: string): Socket => {
   
   // Conectar ao Socket.IO do backend
   socket = io(SOCKET_URL, {
+    transports: ['websocket'],
     auth: { token }
   });
   

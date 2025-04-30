@@ -1,9 +1,8 @@
+// src/contexts/AuthContext.tsx
 import { createContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../types';
-import { API_URL } from '../config';
-import api from '../services/api';
+import { authService } from '../services/api';
 import { connectSocket, disconnectSocket } from '../services/socket';
 
 interface AuthContextType {
@@ -57,15 +56,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           return;
         }
         
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        
-        const response = await axios.get(`${API_URL}/users/me`);
+        const response = await authService.getMe();
         setUser(response.data);
         setIsAuthenticated(true);
       } catch (err) {
         localStorage.removeItem('token');
-        delete axios.defaults.headers.common['Authorization'];
-        return err;
+        console.error('Error verifying token:', err);
       } finally {
         setLoading(false);
       }
@@ -76,11 +72,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (email: string, password: string) => {
     try {
-      console.log('Tentativa de login:', { email, password });
-      
-      const response = await api.post('/auth/login', { email, password });
-      
-      console.log('Resposta do servidor:', response.data);
+      const response = await authService.login(email, password);
       
       if (!response.data || response.data.success === false) {
         throw new Error(response.data?.message || 'Erro ao fazer login');
@@ -98,8 +90,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       setUser(user);
       setIsAuthenticated(true);
-      
-      return user;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Login error:', error);
@@ -115,16 +105,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-
   const register = async (userData: unknown) => {
-    const response = await axios.post(`${API_URL}/auth/register`, userData);
-    const { token, user } = response.data;
-    
-    localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    
-    setUser(user);
-    setIsAuthenticated(true);
+    try {
+      const response = await authService.register(userData);
+      const { token, user } = response.data;
+      
+      localStorage.setItem('token', token);
+      
+      setUser(user);
+      setIsAuthenticated(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error('Register error:', error);
+      if (error.response && error.response.data) {
+        throw new Error(error.response.data.message || 'Erro ao registrar');
+      }
+      throw error;
+    }
   };
 
   const logout = () => {
