@@ -49,8 +49,8 @@ const ChatBox = () => {
     if (message.trim() && isAuthenticated && user) {
       sendMessage({
         text: message,
-        userId: user.id,
-        username: user.username,
+        userId: user?.id,
+        username: user?.username,
         timestamp: new Date()
       });
       setMessage('');
@@ -107,7 +107,7 @@ const ChatBox = () => {
           }}>
             {messages.map((msg, index) => {
               const isCurrentUser = msg.username && user?.username ? 
-                msg.username.toString() === user.username.toString() : 
+                msg.username.toString() === user?.username.toString() : 
                 false;
               
               return (

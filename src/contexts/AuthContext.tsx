@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
         
         const response = await authService.getMe();
-        setUser(response.data);
+        setUser(response?.data);
         setIsAuthenticated(true);
       } catch (err) {
         localStorage.removeItem('token');

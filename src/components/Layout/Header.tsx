@@ -196,7 +196,7 @@ const Header = () => {
                           color: "primary.contrastText",
                         }}
                       >
-                        {user?.username.charAt(0).toUpperCase()}
+                        {user?.username?.charAt(0).toUpperCase()}
                       </Avatar>
                     }
                   >
@@ -269,7 +269,7 @@ const Header = () => {
                   color: "primary.contrastText",
                 }}
               >
-                {user?.username.charAt(0).toUpperCase()}
+                {user?.username?.charAt(0).toUpperCase()}
               </Avatar>
               <Typography variant="h6">{user?.username}</Typography>
               <Typography variant="body2" color="primary">
