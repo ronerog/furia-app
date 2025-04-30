@@ -8,7 +8,6 @@ import {
   CardActions,
   Button,
   Chip,
-  useTheme
 } from '@mui/material';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -20,10 +19,7 @@ interface MatchCardProps {
   compact?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const MatchCard = ({ match, compact = false }: MatchCardProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const theme = useTheme();
+const MatchCard = ({ match }: MatchCardProps) => {
   const { isAuthenticated } = useContext(AuthContext);
   const isUpcoming = match.status === 'upcoming';
   const isLive = match.status === 'live';

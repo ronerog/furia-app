@@ -7,10 +7,8 @@ import {
   Typography,
   Avatar,
   Button,
-  useTheme
 } from '@mui/material';
 import { AuthContext } from '../contexts/AuthContext';
-import { PointsContext } from '../contexts/PointsContext.tsx';
 import { Stream } from '../types';
 
 interface StreamCardProps {
@@ -19,10 +17,7 @@ interface StreamCardProps {
 }
 
 const StreamCard = ({ stream, compact = false }: StreamCardProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const theme = useTheme();
   const { isAuthenticated } = useContext(AuthContext);
-  const { addPoints } = useContext(PointsContext);
   
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -110,7 +105,7 @@ const StreamCard = ({ stream, compact = false }: StreamCardProps) => {
           component="a"
           href={stream.url}
           target="_blank"
-          onClick={() => isAuthenticated && addPoints(stream.isLive ? 5 : 2, stream.isLive ? 'watch_stream' : 'watch_content')}
+          onClick={() => isAuthenticated}
           size={compact ? "small" : "medium"}
         >
           Assistir

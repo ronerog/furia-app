@@ -12,7 +12,6 @@ import {
   Chip,
   Avatar,
   Skeleton,
-  useTheme
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
@@ -26,10 +25,7 @@ import { Match, News, Stream } from '../types';
 import { API_URL } from '../config';
 
 const Home = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const theme = useTheme();
   const { isAuthenticated } = useContext(AuthContext);
-  // const { addPoints } = useContext(PointsContext);
   const [featuredMatches, setFeaturedMatches] = useState<Match[]>([]);
   const [news, setNews] = useState<News[]>([]);
   const [liveStreams, setLiveStreams] = useState<Stream[]>([]);
@@ -61,9 +57,6 @@ const Home = () => {
     
     fetchHomeData();
     
-    // if (isAuthenticated) {
-    //   addPoints(20, 'daily_login');
-    // }
   }, [isAuthenticated]);
 
   const HeroSection = () => (

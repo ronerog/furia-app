@@ -79,8 +79,6 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
 
   const currentLevel = Math.floor(100 / 100);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const nextLevelPoints = (currentLevel + 1) * 100;
   const progress = ((100 % 100) / 100) * 100;
 
  useEffect(() => {
@@ -107,7 +105,7 @@ const UserProfile = () => {
     fetchUserStats();
   }, [isAuthenticated, user]);
   
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 

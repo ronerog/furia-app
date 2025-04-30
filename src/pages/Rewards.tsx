@@ -18,7 +18,6 @@ import {
   Chip,
   LinearProgress,
   Alert,
-  useTheme
 } from '@mui/material';
 import RedeemIcon from '@mui/icons-material/Redeem';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -28,8 +27,6 @@ import MainLayout from '../components/Layout/MainLayout';
 import { Reward } from '../types';
 
 const Rewards = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const theme = useTheme();
   const { isAuthenticated } = useContext(AuthContext);
   // const { points } = useContext(PointsContext);
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
@@ -40,8 +37,6 @@ const Rewards = () => {
   const [addressError, setAddressError] = useState(false);
   
   const currentLevel = Math.floor(100);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const nextLevelPoints = (currentLevel + 1) * 100;
   const progress = ((100 % 100) / 100) * 100;
   
   const mockRewards: Reward[] = [
