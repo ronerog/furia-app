@@ -19,6 +19,7 @@ import * as yup from 'yup';
 import { AuthContext } from '../contexts/AuthContext';
 import MainLayout from '../components/Layout/MainLayout';
 import logo from '../assets/furia-logo.png';
+import axios from 'axios';
 
 const schema = yup.object({
   email: yup.string()
@@ -61,21 +62,26 @@ const Login = () => {
     
     try {
       await login(data.email, data.password);
-      navigate('/');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      console.error('Erro de login:', err);
-      
-      if (err.response && err.response.status === 401) {
-        setError('Email ou senha incorretos. Por favor, tente novamente.');
-      } else if (err.message) {
-        setError(err.message);
-      } else {
-        setError('Erro ao fazer login. Por favor, tente novamente mais tarde.');
-      }
-    } finally {
-      setLoading(false);
+  navigate('/');
+} catch (err: unknown) {
+  console.error('Erro de login:', err);
+
+  if (axios.isAxiosError(err)) {
+    if (err.response?.status === 401) {
+      setError('Email ou senha incorretos. Por favor, tente novamente.');
+    } else if (err.response?.data?.message) {
+      setError(err.response.data.message);
+    } else {
+      setError('Erro ao fazer login. Por favor, tente novamente mais tarde.');
     }
+  } else if (err instanceof Error) {
+    setError(err.message);
+  } else {
+    setError('Erro inesperado. Por favor, tente novamente mais tarde.');
+  }
+} finally {
+  setLoading(false);
+}
   };
 
   const toggleShowPassword = () => {
