@@ -510,7 +510,7 @@ const FanInfoStep = () => {
   
   const Register = () => {
     const navigate = useNavigate();
-    const { register: registerUser } = useContext(AuthContext);
+    const { register } = useContext(AuthContext);
     const [activeStep, setActiveStep] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -567,7 +567,7 @@ const FanInfoStep = () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { confirmPassword, termsAccepted, ...registerData } = data;
         
-        await registerUser(registerData);
+        await register(registerData);
         navigate('/');
       } catch (err: unknown) {
         if (err instanceof Error) {
