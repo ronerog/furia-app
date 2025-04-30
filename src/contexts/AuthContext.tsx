@@ -129,7 +129,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     
     disconnectSocket();
     
-    setUser(null);
     setIsAuthenticated(false);
   };
 
