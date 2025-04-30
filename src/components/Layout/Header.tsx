@@ -26,7 +26,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import PersonIcon from "@mui/icons-material/Person";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import { AuthContext } from "../../contexts/AuthContext";
-import { PointsContext } from "../../contexts/PointsContext";
+// import { PointsContext } from "../../contexts/PointsContext.tsx";
 import logo from "../../assets/furia-logo.png";
 
 interface Game {
@@ -40,7 +40,7 @@ const Header = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useContext(AuthContext);
-  const { points } = useContext(PointsContext);
+  // const { points } = useContext(PointsContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [gamesMenuAnchor, setGamesMenuAnchor] = useState<null | HTMLElement>(
     null
@@ -180,7 +180,7 @@ const Header = () => {
               {isAuthenticated ? (
                 <>
                   <Typography variant="body2" color="primary" sx={{ mr: 2 }}>
-                    {points} pontos
+                    100 pontos
                   </Typography>
 
                   <Button
@@ -273,7 +273,7 @@ const Header = () => {
               </Avatar>
               <Typography variant="h6">{user?.username}</Typography>
               <Typography variant="body2" color="primary">
-                {points} pontos
+                100 pontos
               </Typography>
             </Box>
           )}

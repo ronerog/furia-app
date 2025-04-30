@@ -19,7 +19,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { AuthContext } from '../contexts/AuthContext';
-import { PointsContext } from '../contexts/PointsContext';
+// import { PointsContext } from '../contexts/PointsContext.tsx';
 import MainLayout from '../components/Layout/MainLayout';
 import axios from 'axios';
 import { Match, News, Stream } from '../types';
@@ -29,7 +29,7 @@ const Home = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const theme = useTheme();
   const { isAuthenticated } = useContext(AuthContext);
-  const { addPoints } = useContext(PointsContext);
+  // const { addPoints } = useContext(PointsContext);
   const [featuredMatches, setFeaturedMatches] = useState<Match[]>([]);
   const [news, setNews] = useState<News[]>([]);
   const [liveStreams, setLiveStreams] = useState<Stream[]>([]);
@@ -61,10 +61,10 @@ const Home = () => {
     
     fetchHomeData();
     
-    if (isAuthenticated) {
-      addPoints(20, 'daily_login');
-    }
-  }, [isAuthenticated, addPoints]);
+    // if (isAuthenticated) {
+    //   addPoints(20, 'daily_login');
+    // }
+  }, [isAuthenticated]);
 
   const HeroSection = () => (
     <Box
@@ -272,7 +272,7 @@ const Home = () => {
                           component="a"
                           href={match.streamUrl}
                           target="_blank"
-                          onClick={() => isAuthenticated && addPoints(10, 'watch_match')}
+                          onClick={() => isAuthenticated}
                         >
                           Assistir Ao Vivo
                         </Button>
@@ -469,7 +469,7 @@ const Home = () => {
                       component="a"
                       href={stream.url}
                       target="_blank"
-                      onClick={() => isAuthenticated && addPoints(5, 'watch_stream')}
+                      onClick={() => isAuthenticated}
                     >
                       Assistir
                     </Button>

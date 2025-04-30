@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       localStorage.setItem('token', token);
       
       connectSocket(token);
-      
+
       setUser(user);
       setIsAuthenticated(true);
       

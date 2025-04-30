@@ -13,7 +13,6 @@ import {
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { AuthContext } from '../contexts/AuthContext';
-import { PointsContext } from '../contexts/PointsContext';
 import { Match } from '../types';
 
 interface MatchCardProps {
@@ -26,8 +25,6 @@ const MatchCard = ({ match, compact = false }: MatchCardProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const theme = useTheme();
   const { isAuthenticated } = useContext(AuthContext);
-  const { addPoints } = useContext(PointsContext);
-  
   const isUpcoming = match.status === 'upcoming';
   const isLive = match.status === 'live';
   
@@ -119,7 +116,7 @@ const MatchCard = ({ match, compact = false }: MatchCardProps) => {
               component="a"
               href={match.streamUrl}
               target="_blank"
-              onClick={() => isAuthenticated && addPoints(10, 'watch_match')}
+              onClick={() => isAuthenticated}
             >
               {isLive ? 'Assistir Ao Vivo' : 'Lembrete'}
             </Button>
@@ -141,7 +138,7 @@ const MatchCard = ({ match, compact = false }: MatchCardProps) => {
               component="a"
               href={match.highlightsUrl}
               target="_blank"
-              onClick={() => isAuthenticated && addPoints(5, 'watch_highlights')}
+              onClick={() => isAuthenticated}
             >
               Ver Highlights
             </Button>

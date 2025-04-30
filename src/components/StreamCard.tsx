@@ -10,7 +10,7 @@ import {
   useTheme
 } from '@mui/material';
 import { AuthContext } from '../contexts/AuthContext';
-import { PointsContext } from '../contexts/PointsContext';
+import { PointsContext } from '../contexts/PointsContext.tsx';
 import { Stream } from '../types';
 
 interface StreamCardProps {

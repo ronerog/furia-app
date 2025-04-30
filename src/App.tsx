@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import theme from './theme/theme';
 
 import { AuthProvider } from './contexts/AuthContext';
-import { PointsProvider } from './contexts/PointsContext';
+// import { PointsProvider } from './contexts/PointsContext';
 import { ChatProvider } from './contexts/ChatContext';
 
 import Home from './pages/Home';
@@ -25,7 +25,7 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <AuthProvider>
-          <PointsProvider>
+          {/* <PointsProvider> */}
             <ChatProvider>
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -41,7 +41,7 @@ function App() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </ChatProvider>
-          </PointsProvider>
+          {/* </PointsProvider> */}
         </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>

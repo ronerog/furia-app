@@ -9,10 +9,6 @@ import {
   Tabs,
   Tab,
   Avatar,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
   Chip,
   LinearProgress,
   Card,
@@ -32,7 +28,7 @@ import RedeemIcon from '@mui/icons-material/Redeem';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { AuthContext } from '../contexts/AuthContext';
-import { PointsContext } from '../contexts/PointsContext';
+// import { PointsContext } from '../contexts/PointsContext.tsx';
 import MainLayout from '../components/Layout/MainLayout';
 // import axios from 'axios';
 // import { Activity } from '../types';
@@ -76,16 +72,16 @@ function a11yProps(index: number) {
 const UserProfile = () => {
   const theme = useTheme();
   const { isAuthenticated, user } = useContext(AuthContext);
-  const { points, activities } = useContext(PointsContext);
+  // const { points, activities } = useContext(PointsConstext);
   const [tabValue, setTabValue] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userStats, setUserStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const currentLevel = Math.floor(points / 100);
+  const currentLevel = Math.floor(100 / 100);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const nextLevelPoints = (currentLevel + 1) * 100;
-  const progress = ((points % 100) / 100) * 100;
+  const progress = ((100 % 100) / 100) * 100;
 
  useEffect(() => {
     const fetchUserStats = async () => {
@@ -115,14 +111,11 @@ const UserProfile = () => {
     setTabValue(newValue);
   };
 
-  const activityCounts = activities.reduce((acc, activity) => {
-    const type = activity.type;
-    if (!acc[type]) {
-      acc[type] = 0;
-    }
-    acc[type]++;
-    return acc;
-  }, {} as Record<string, number>);
+  const activityCounts = {
+    chat_message: userStats?.messagesCount || 0,
+    watch_match: userStats?.matchesWatched || 0,
+    reward_redemption: userStats?.rewardsRedeemed || 0
+  };
 
 
   if (!isAuthenticated) {
@@ -205,7 +198,7 @@ const UserProfile = () => {
                 }}
               >
                 <Typography variant="h3" color="primary">
-                  {points}
+                  100
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                   PONTOS
@@ -222,7 +215,7 @@ const UserProfile = () => {
                   sx={{ mt: 1, height: 8, borderRadius: 4 }}
                 />
                 <Typography variant="caption" color="text.secondary">
-                  {points % 100}/{100} para o nível {currentLevel + 1}
+                  {100 % 100}/{100} para o nível {currentLevel + 1}
                 </Typography>
               </Paper>
             </Grid>
@@ -572,68 +565,6 @@ const UserProfile = () => {
               </Grid>
             </Box>
           </TabPanel>
-          
-          <TabPanel value={tabValue} index={2}>
-            <Typography variant="h6" gutterBottom>
-              Histórico de Atividades
-            </Typography>
-            
-            <Paper elevation={0} sx={{ bgcolor: 'background.default', borderRadius: 2 }}>
-              <List>
-                {activities.length > 0 ? (
-                  activities.map((activity, index) => (
-                    <React.Fragment key={activity.id}>
-                      <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                          <Avatar sx={{ bgcolor: 'primary.main' }}>
-                            {activity.type === 'chat_message' && <MessageIcon />}
-                            {activity.type === 'watch_match' && <VideogameAssetIcon />}
-                            {activity.type === 'watch_highlights' && <VideogameAssetIcon />}
-                            {activity.type === 'view_time' && <AccessTimeIcon />}
-                            {activity.type === 'daily_login' && <CheckCircleIcon />}
-                            {activity.type === 'reward_redemption' && <RedeemIcon />}
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                              <Typography variant="subtitle2">
-                                {activity.type === 'chat_message' && 'Mensagem no chat'}
-                                {activity.type === 'watch_match' && 'Assistiu partida'}
-                                {activity.type === 'watch_highlights' && 'Assistiu highlights'}
-                                {activity.type === 'view_time' && 'Tempo de visualização'}
-                                {activity.type === 'daily_login' && 'Login diário'}
-                                {activity.type === 'reward_redemption' && `Resgatou recompensa: ${activity.rewardName}`}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color={activity.points > 0 ? 'primary.main' : 'error.main'}
-                              >
-                                {activity.points > 0 ? '+' : ''}{activity.points} pontos
-                              </Typography>
-                            </Box>
-                          }
-                          secondary={
-                            <Typography variant="caption" color="text.secondary">
-                              {format(new Date(activity.timestamp), "dd 'de' MMMM 'de' yyyy, HH:mm", { locale: ptBR })}
-                            </Typography>
-                          }
-                        />
-                      </ListItem>
-                      {index < activities.length - 1 && <Divider component="li" />}
-                    </React.Fragment>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText
-                      primary="Nenhuma atividade registrada ainda."
-                      secondary="Interaja com o site para ganhar pontos e recompensas!"
-                    />
-                  </ListItem>
-                )}
-              </List>
-            </Paper>
-          </TabPanel>
         </Paper>
         
         <Box sx={{ mt: 4 }}>
@@ -678,11 +609,11 @@ const UserProfile = () => {
                 <Box sx={{ p: 2, pt: 0 }}>
                   <LinearProgress 
                     variant="determinate" 
-                    value={(points / 200) * 100} 
+                    value={(100 / 200) * 100} 
                     sx={{ height: 8, borderRadius: 4, mb: 1 }} 
                   />
                   <Typography variant="body2" color="text.secondary" align="center">
-                    {points}/200 pontos
+                    100/200 pontos
                   </Typography>
                 </Box>
               </Card>
@@ -724,11 +655,11 @@ const UserProfile = () => {
                 <Box sx={{ p: 2, pt: 0 }}>
                   <LinearProgress 
                     variant="determinate" 
-                    value={(points / 500) * 100} 
+                    value={(100 / 500) * 100} 
                     sx={{ height: 8, borderRadius: 4, mb: 1 }} 
                   />
                   <Typography variant="body2" color="text.secondary" align="center">
-                    {points}/500 pontos
+                    100/500 pontos
                   </Typography>
                 </Box>
               </Card>
@@ -770,11 +701,11 @@ const UserProfile = () => {
                 <Box sx={{ p: 2, pt: 0 }}>
                   <LinearProgress 
                     variant="determinate" 
-                    value={(points / 1000) * 100} 
+                    value={(100 / 1000) * 100} 
                     sx={{ height: 8, borderRadius: 4, mb: 1 }} 
                   />
                   <Typography variant="body2" color="text.secondary" align="center">
-                    {points}/1000 pontos
+                    100/1000 pontos
                   </Typography>
                 </Box>
               </Card>

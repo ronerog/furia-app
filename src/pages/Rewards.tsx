@@ -23,7 +23,7 @@ import {
 import RedeemIcon from '@mui/icons-material/Redeem';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { AuthContext } from '../contexts/AuthContext';
-import { PointsContext } from '../contexts/PointsContext';
+// import { PointsContext } from '../contexts/PointsContext.tsx';
 import MainLayout from '../components/Layout/MainLayout';
 import { Reward } from '../types';
 
@@ -31,7 +31,7 @@ const Rewards = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const theme = useTheme();
   const { isAuthenticated } = useContext(AuthContext);
-  const { points } = useContext(PointsContext);
+  // const { points } = useContext(PointsContext);
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -39,10 +39,10 @@ const Rewards = () => {
   const [address, setAddress] = useState('');
   const [addressError, setAddressError] = useState(false);
   
-  const currentLevel = Math.floor(points / 100);
+  const currentLevel = Math.floor(100);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const nextLevelPoints = (currentLevel + 1) * 100;
-  const progress = ((points % 100) / 100) * 100;
+  const progress = ((100 % 100) / 100) * 100;
   
   const mockRewards: Reward[] = [
     {
@@ -183,11 +183,11 @@ const Rewards = () => {
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <RedeemIcon fontSize="large" sx={{ mr: 2, color: 'primary.main' }} />
                   <Typography variant="h4" color="primary">
-                    {points} pontos
+                    {100} pontos
                   </Typography>
                 </Box>
                 <Typography variant="body2" sx={{ mt: 1 }}>
-                  Nível {currentLevel} ({points % 100}/{100} para o nível {currentLevel + 1})
+                  Nível {currentLevel} ({100 % 100}/{100} para o nível {currentLevel + 1})
                 </Typography>
                 <LinearProgress 
                   variant="determinate" 
@@ -281,10 +281,10 @@ const Rewards = () => {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    disabled={points < reward.pointsCost}
+                    disabled={100 < reward.pointsCost}
                     onClick={() => handleOpenDialog(reward)}
                   >
-                    {points >= reward.pointsCost ? 'Resgatar' : 'Pontos insuficientes'}
+                    {100 >= reward.pointsCost ? 'Resgatar' : 'Pontos insuficientes'}
                   </Button>
                 </Box>
               </Card>
