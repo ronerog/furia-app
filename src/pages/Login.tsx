@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, ReactEventHandler } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -63,6 +63,7 @@ const Login = () => {
     try {
       await login(data.email, data.password);
   navigate('/');
+  return;
 } catch (err: unknown) {
   console.error('Erro de login:', err);
 
@@ -90,6 +91,10 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleSubmit(onSubmit)();
+  };
   return (
     <MainLayout withoutChat>
       <Container maxWidth="sm">
@@ -115,7 +120,7 @@ const Login = () => {
             </Alert>
           )}
           
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: '100%', mt: 1 }}>
+          <Box component="form" onSubmit={handleFormSubmit} noValidate sx={{ width: '100%', mt: 1 }}>
             <Controller
               name="email"
               control={control}
