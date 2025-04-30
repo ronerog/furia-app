@@ -67,7 +67,9 @@ const Login = () => {
   console.error('Erro de login:', err);
 
   if (axios.isAxiosError(err)) {
-    if (err.response?.status === 401) {
+    const status = err.response?.status;
+
+    if (status === 401) {
       setError('Email ou senha incorretos. Por favor, tente novamente.');
     } else if (err.response?.data?.message) {
       setError(err.response.data.message);
@@ -77,7 +79,7 @@ const Login = () => {
   } else if (err instanceof Error) {
     setError(err.message);
   } else {
-    setError('Erro inesperado. Por favor, tente novamente mais tarde.');
+    setError('Erro inesperado. Por favor, tente novamente.');
   }
 } finally {
   setLoading(false);
