@@ -27,7 +27,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import { AuthContext } from "../../contexts/AuthContext";
 // import { PointsContext } from "../../contexts/PointsContext.tsx";
-import logo from "../../assets/furia-logo.png";
+import logo from "../../assets/furia-logo.svg";
 
 interface Game {
   name: string;

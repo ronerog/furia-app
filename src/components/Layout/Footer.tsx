@@ -13,7 +13,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import logo from '../../assets/furia-logo.png';
+import logo from '../../assets/furia-logo.svg';
 
 
 

@@ -64,7 +64,7 @@ const MatchCard = ({ match }: MatchCardProps) => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40%' }}>
             <Avatar 
-              src="/images/furia-logo.png" 
+              src="/images/furia-logo.svg" 
               alt="FURIA" 
               sx={{ width: 64, height: 64, mb: 1 }}
             />

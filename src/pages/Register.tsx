@@ -25,7 +25,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { AuthContext } from '../contexts/AuthContext';
 import MainLayout from '../components/Layout/MainLayout';
-import logo from '../assets/furia-logo.png';
+import logo from '../assets/furia-logo.svg';
 
 const accountSchema = yup.object({
   username: yup.string()
