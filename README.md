@@ -112,12 +112,11 @@ yarn build
 
 A aplicação frontend depende do backend para funcionar corretamente. Certifique-se de que o servidor backend esteja em execução e acessível na URL configurada no arquivo `src/config.ts`.
 
-## Sistema de Pontos e Recompensas
+## (FUTURE UPDATE) Sistema de Pontos e Recompensas 
 
 Os usuários ganham pontos através de:
 
 - **Login diário**: 20 pontos  
-- **Envio de mensagens no chat**: 1 ponto por mensagem  
 - **Assistir partidas**: 10 pontos  
 - **Assistir highlights**: 5 pontos  
 - **Tempo de navegação**: 5 pontos a cada 5 minutos  
