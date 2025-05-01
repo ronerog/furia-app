@@ -19,7 +19,7 @@ import * as yup from 'yup';
 import { AuthContext } from '../contexts/AuthContext';
 import MainLayout from '../components/Layout/MainLayout';
 import logo from '../assets/furia-logo.svg';
-import axios from 'axios';
+// import axios from 'axios';
 
 const schema = yup.object({
   email: yup.string()
@@ -61,29 +61,24 @@ const Login = () => {
     setError(null);
     
     try {
-      await login(data.email, data.password);
-  navigate('/');
-  return;
-} catch (err: unknown) {
-  console.error('Erro de login:', err);
-
-  if (axios.isAxiosError(err)) {
-    const status = err.response?.status;
-
-    if (status === 401) {
-      setError('Email ou senha incorretos. Por favor, tente novamente.');
-    } else if (err.response?.data?.message) {
-      setError(err.response.data.message);
-    } else {
-      setError('Erro ao fazer login. Por favor, tente novamente mais tarde.');
+      const response = await login(data.email, data.password) as { status?: number; data?: { message?: string } } | void;
+      if(response == undefined) {
+        setError('Email ou senha incorretos. Por favor, tente novamente.');
+      } else if (response?.status === 401) {
+          setError('Email ou senha incorretos. Por favor, tente novamente.');
+        } else if (response?.status === 400) {
+        setError('O servidor não pode ou não irá processar a requisição')
+      } else if (response?.data?.message) {
+        setError(response.data.message);
+      } else {
+        navigate(`/`)
+      }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err: unknown) {
+      setError('Erro inesperado. Por favor, tente novamente.');
     }
-  } else if (err instanceof Error) {
-    setError(err.message);
-  } else {
-    setError('Erro inesperado. Por favor, tente novamente.');
-  }
-} finally {
-  setLoading(false);
+     finally {
+    setLoading(false);
 }
   };
 

@@ -72,36 +72,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await authService.login(email, password);
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+  
+      const data = await response.json();
+      console.log(data.success)
+      const { token, user, success } = data;
+      if (success == true) {
+        localStorage.setItem('token', token);
       
-      if (!response.data || response.data.success === false) {
-        throw new Error(response.data?.message || 'Erro ao fazer login');
+        connectSocket(token);
+  
+        setUser(user);
+        setIsAuthenticated(true);
+      } else {
+        console.log('CAIU AQUI - erro', data);
+        setIsAuthenticated(false)
       }
-      
-      const { token, user } = response.data;
-      
-      if (!token || !user) {
-        throw new Error('Resposta incompleta do servidor');
-      }
-      
-      localStorage.setItem('token', token);
-      
-      connectSocket(token);
-
-      setUser(user);
-      setIsAuthenticated(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      console.error('Login error:', error);
-      
-      if (error.response) {
-        if (error.response.status === 401) {
-          throw new Error('Email ou senha incorretos');
-        } else if (error.response.data && error.response.data.message) {
-          throw new Error(error.response.data.message);
-        }
-      }
-      throw error;
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      setIsAuthenticated(false)
     }
   };
 

@@ -34,7 +34,9 @@ api.interceptors.response.use(
 
 export const authService = {
   login: async (email: string, password: string) => {
-    return api.post('/auth/login', { email, password });
+    console.log(`TOAQUI`)
+    const response = await api.post('/auth/login', { email, password });
+    console.log(`RESPONSEEEEEEEEEEEEEEEEE`, response)
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: async (userData: any) => {
