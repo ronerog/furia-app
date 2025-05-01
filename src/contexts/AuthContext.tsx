@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { User } from '../types';
 import { authService } from '../services/api';
 import { connectSocket, disconnectSocket } from '../services/socket';
+import { API_URL } from '../config';
 
 interface AuthContextType {
   user: User | null;
@@ -72,7 +73,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
