@@ -23,6 +23,8 @@ import { ChatContext } from '../../contexts/ChatContext';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+const CHAT_WIDTH = 320;
+
 const ChatBox = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
@@ -39,18 +41,22 @@ const ChatBox = () => {
   }, [messages]);
 
   useEffect(() => {
-    window.dispatchEvent(new CustomEvent('chat-toggle', { 
-      detail: { isOpen: drawerOpen } 
-    }));
+    window.dispatchEvent(
+      new CustomEvent('chat-toggle', { detail: { isOpen: drawerOpen } })
+    );
   }, [drawerOpen]);
+
+  useEffect(() => {
+    setDrawerOpen(!isMobile);
+  }, [isMobile]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim() && isAuthenticated && user) {
       sendMessage({
         text: message,
-        userId: user?.id,
-        username: user?.username,
+        userId: user.id,
+        username: user.username,
         timestamp: new Date()
       });
       setMessage('');
@@ -58,23 +64,25 @@ const ChatBox = () => {
   };
 
   const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
+    setDrawerOpen((prev) => !prev);
   };
 
   const renderChatContent = () => (
-    <Box sx={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      height: '100%', 
-      width: isMobile ? '100%' : 320,
-      bgcolor: 'background.paper',
-      boxShadow: theme.shadows[5],
-      borderLeft: `1px solid ${theme.palette.primary.main}`,
-    }}>
-      <Paper 
-        elevation={0} 
-        sx={{ 
-          p: 2, 
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        width: isMobile ? '100%' : CHAT_WIDTH,
+        bgcolor: 'background.paper',
+        boxShadow: theme.shadows[5],
+        borderLeft: `1px solid ${theme.palette.primary.main}`
+      }}
+    >
+      <Paper
+        elevation={0}
+        sx={{
+          p: 2,
           borderBottom: `1px solid ${theme.palette.divider}`,
           display: 'flex',
           justifyContent: 'space-between',
@@ -82,14 +90,12 @@ const ChatBox = () => {
           bgcolor: 'background.paper'
         }}
       >
-        <Box >
-          <Typography variant="h6" color="primary">Chat da FURIA</Typography>
-            Espectadores: <Badge 
-            badgeContent={onlineUsers} 
-            color="primary" 
-            sx={{ ml: 2 }}
-          >
-          </Badge>
+        <Box>
+          <Typography variant="h6" color="primary">
+            Chat da FURIA
+          </Typography>
+          Espectadores:{' '}
+          <Badge badgeContent={onlineUsers} color="primary" sx={{ ml: 1 }} />
         </Box>
         <IconButton onClick={toggleDrawer} edge="end">
           <CloseIcon />
@@ -98,21 +104,24 @@ const ChatBox = () => {
 
       {isAuthenticated ? (
         <>
-          <Box sx={{ 
-            flexGrow: 1, 
-            overflow: 'auto', 
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column'
-          }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              overflow: 'auto',
+              p: 2,
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
             {messages.map((msg, index) => {
-              const isCurrentUser = msg.username && user?.username ? 
-                msg.username.toString() === user?.username.toString() : 
-                false;
-              
+              const isCurrentUser =
+                msg.username && user?.username
+                  ? msg.username.toString() === user.username.toString()
+                  : false;
+
               return (
-                <Box 
-                  key={index} 
+                <Box
+                  key={index}
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -120,15 +129,17 @@ const ChatBox = () => {
                     mb: 2
                   }}
                 >
-                  <Box sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center',
-                    flexDirection: isCurrentUser ? 'row-reverse' : 'row' 
-                  }}>
-                    <Avatar 
-                      sx={{ 
-                        width: 24, 
-                        height: 24, 
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: isCurrentUser ? 'row-reverse' : 'row'
+                    }}
+                  >
+                    <Avatar
+                      sx={{
+                        width: 24,
+                        height: 24,
                         bgcolor: isCurrentUser ? 'primary.main' : 'grey.700',
                         mr: isCurrentUser ? 0 : 1,
                         ml: isCurrentUser ? 1 : 0
@@ -140,23 +151,25 @@ const ChatBox = () => {
                       {msg.username || 'Usuário'}
                     </Typography>
                   </Box>
-                  
-                  <Paper 
-                    elevation={0} 
-                    sx={{ 
-                      p: 1.5, 
-                      mt: 0.5, 
-                      maxWidth: '80%', 
+
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      p: 1.5,
+                      mt: 0.5,
+                      maxWidth: '80%',
                       borderRadius: 2,
                       bgcolor: isCurrentUser ? 'primary.dark' : 'grey.800',
-                      color: isCurrentUser ? 'primary.contrastText' : 'text.primary',
+                      color: isCurrentUser
+                        ? 'primary.contrastText'
+                        : 'text.primary'
                     }}
                   >
                     <Typography variant="body2">{msg.text}</Typography>
                   </Paper>
-                  
-                  <Typography 
-                    variant="caption" 
+
+                  <Typography
+                    variant="caption"
                     color="text.secondary"
                     sx={{ mt: 0.5 }}
                   >
@@ -168,14 +181,14 @@ const ChatBox = () => {
             <div ref={messagesEndRef} />
           </Box>
 
-          <Paper 
-            component="form" 
+          <Paper
+            component="form"
             onSubmit={handleSend}
-            elevation={0} 
-            sx={{ 
-              p: 2, 
+            elevation={0}
+            sx={{
+              p: 2,
               borderTop: `1px solid ${theme.palette.divider}`,
-              display: 'flex', 
+              display: 'flex',
               alignItems: 'center'
             }}
           >
@@ -186,38 +199,36 @@ const ChatBox = () => {
               placeholder="Digite sua mensagem..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              sx={{ 
+              sx={{
                 mr: 1,
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 4
                 }
               }}
             />
-            <IconButton 
-              type="submit" 
-              color="primary" 
-              disabled={!message.trim()}
-            >
+            <IconButton type="submit" color="primary" disabled={!message.trim()}>
               <SendIcon />
             </IconButton>
           </Paper>
         </>
       ) : (
-        <Box sx={{ 
-          flexGrow: 1, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          p: 3 
-        }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: 3
+          }}
+        >
           <Typography variant="body1" align="center" gutterBottom>
             Faça login para participar do chat com outros fãs!
           </Typography>
-          <Button 
-            variant="contained" 
-            color="primary" 
-            component={Link} 
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
             to="/login"
             sx={{ mt: 2 }}
           >
@@ -231,42 +242,43 @@ const ChatBox = () => {
   if (isMobile) {
     return (
       <>
-        <Box 
-          sx={{ 
-            position: 'fixed', 
-            bottom: 16, 
-            right: 16, 
-            zIndex: 1000 
+        <Box
+          sx={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+            zIndex: 1000
           }}
         >
-          <Badge 
-            badgeContent={onlineUsers} 
-            color="primary"
-            invisible={drawerOpen}
-          >
+          <Badge badgeContent={onlineUsers} color="primary" invisible={drawerOpen}>
             <Button
               variant="contained"
               color="primary"
               onClick={toggleDrawer}
-              startIcon={<ChatIcon />}
-              sx={{ borderRadius: '50%', minWidth: 0, width: 56, height: 56, p: 0 }}
+              sx={{
+                borderRadius: '50%',
+                minWidth: 0,
+                width: 56,
+                height: 56,
+                p: 0
+              }}
             >
               <ChatIcon />
             </Button>
           </Badge>
         </Box>
-        
+
         <Drawer
           anchor="right"
           open={drawerOpen}
           onClose={toggleDrawer}
           sx={{
             '& .MuiDrawer-paper': {
-              width: '100%', 
+              width: '100%',
               maxWidth: 360,
               height: '100%',
               border: 'none'
-            },
+            }
           }}
         >
           {renderChatContent()}
@@ -277,10 +289,10 @@ const ChatBox = () => {
 
   return (
     <>
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           position: 'fixed',
-          right: drawerOpen ? 320 : 0,
+          right: drawerOpen ? CHAT_WIDTH : 0,
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 101,
@@ -291,7 +303,7 @@ const ChatBox = () => {
           variant="contained"
           color="primary"
           onClick={toggleDrawer}
-          sx={{ 
+          sx={{
             minWidth: 0,
             height: 80,
             width: 30,
@@ -302,14 +314,14 @@ const ChatBox = () => {
           {drawerOpen ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
         </Button>
       </Box>
-      
-      <Box 
-        sx={{ 
+
+      <Box
+        sx={{
           position: 'fixed',
-          right: drawerOpen ? 0 : -320,
+          right: drawerOpen ? 0 : -CHAT_WIDTH,
           top: 64,
           bottom: 0,
-          width: 320,
+          width: CHAT_WIDTH,
           zIndex: 100,
           transition: 'right 0.3s ease'
         }}
