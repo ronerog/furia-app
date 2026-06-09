@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
-  Box, Typography, Grid, Card, CardContent, CardActions,
-  Button, Chip, Avatar, Skeleton, Tabs, Tab, Container,
+  Box, Typography, Card, CardContent,
+  Button, Chip, Avatar, Skeleton, Tabs, Tab,
 } from '@mui/material';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import MainLayout from '../components/Layout/MainLayout';
