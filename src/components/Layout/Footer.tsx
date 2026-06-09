@@ -6,7 +6,9 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import logo from '../../assets/furia-logo.svg';
 
-const footerLinks = {
+type FooterLink = { label: string; path: string; external?: boolean };
+
+const footerLinks: Record<string, FooterLink[]> = {
   Times: [
     { label: 'CS2', path: '/games/csgo' },
     { label: 'Valorant', path: '/games/valorant' },
