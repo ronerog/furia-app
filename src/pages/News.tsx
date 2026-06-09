@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   Box, Typography, Grid, Card, CardMedia, CardContent,
-  Button, Chip, Skeleton,
+  Chip, Skeleton,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
