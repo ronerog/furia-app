@@ -1,2 +1,2 @@
-export const API_URL = import.meta.env.API_URL || 'https://furia-backend.onrender.com/api';
-export const SOCKET_URL = import.meta.env.SOCKET_URL || 'https://furia-backend.onrender.com';
+export const API_URL = import.meta.env.VITE_API_URL || 'https://furia-backend.squareweb.app/api';
+export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'https://furia-backend.squareweb.app';
